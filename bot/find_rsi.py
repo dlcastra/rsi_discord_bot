@@ -42,4 +42,3 @@ def calculate_rsi(data: list) -> float or None:
 
     rsi = RSIIndicator(df["close"], RSI_PERIOD).rsi()
     return rsi.iloc[-1]
-
