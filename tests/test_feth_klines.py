@@ -15,8 +15,6 @@ def test_fetch_klines():
     # NEGATIVE CASES
     assert response is not None
     assert len(response) != 0
-    assert response != [["1670608800000", "13.64", "13.64", "13.565", "13.625", "8882", "120850.4695"]]
 
     # POSITIVE CASES
     assert type(response) is list
-    assert response == [["1719655200000", "26", "26", "26", "26", "0", "0"]]

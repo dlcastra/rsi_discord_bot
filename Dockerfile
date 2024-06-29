@@ -49,4 +49,4 @@ COPY .env .env
 EXPOSE 8000
 
 # Run the application.
-CMD python bot/bot_rsi.py
+CMD python bot_rsi.py
