@@ -20,3 +20,8 @@ docker run rsibot
 ```
 python bot/bot_rsi.py
 ```
+
+## TO RUN TESTS:
+```
+pytest
+```
