@@ -12,7 +12,7 @@ def test_calculate_rsi():
 
 def test_klines_empty_list():
     kline_list = []
-    rsi_result = calculate_rsi(kline_list) # Return None if kline list is empty
+    rsi_result = calculate_rsi(kline_list)  # Return None if kline list is empty
 
     assert rsi_result is None
     assert type(rsi_result) is not int
