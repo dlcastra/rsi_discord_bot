@@ -5,7 +5,7 @@ import pandas as pd
 from ta.momentum import RSIIndicator
 
 # Custom files
-from constants.bybit_constants import RSI_PERIOD
+from constants import RSI_PERIOD
 
 
 def fetch_klines(session, category: str, symbol: str, interval: int, limit: int) -> list or None:
