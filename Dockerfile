@@ -17,7 +17,7 @@ ENV DOCKERIZED=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /bot
+WORKDIR /
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
@@ -49,4 +49,4 @@ COPY .env .env
 EXPOSE 8000
 
 # Run the application.
-CMD python bot_rsi.py
+CMD python /bot/bot_rsi.py
