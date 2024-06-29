@@ -1,11 +1,5 @@
-# Python base libs
-
-# Installed libs
 import pandas as pd
 from ta.momentum import RSIIndicator
-
-# Custom files
-from constants import RSI_PERIOD
 
 
 def fetch_klines(session, category: str, symbol: str, interval: int, limit: int) -> list or None:
@@ -22,7 +16,7 @@ def fetch_klines(session, category: str, symbol: str, interval: int, limit: int)
         return None
 
 
-def calculate_rsi(data: list) -> float or None:
+def calculate_rsi(data: list, period: int) -> float or None:
     if not data or len(data) == 0:
         print("No data to calculate RSI.")
         return None
@@ -31,5 +25,5 @@ def calculate_rsi(data: list) -> float or None:
     closes = [float(item[4]) for item in data]
     df = pd.DataFrame(closes, columns=["close"])
 
-    rsi = RSIIndicator(df["close"], RSI_PERIOD).rsi()
+    rsi = RSIIndicator(df["close"], period).rsi()
     return rsi.iloc[-1]

@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from pybit.unified_trading import HTTP
 
 # Custom files
-from constants import SYMBOL, HOUR_INTERVAL, OVERBOUGHT_THRESHOLD, OVERSOLD_THRESHOLD
+from constants import SYMBOL, HOUR_INTERVAL, OVERBOUGHT_THRESHOLD, OVERSOLD_THRESHOLD, RSI_PERIOD
 from find_rsi import calculate_rsi, fetch_klines
 
 """ ------ ENV ------ """
@@ -32,12 +32,12 @@ async def check_rsi() -> str or None:
     :return str if found klines
     :return None if no klines found
     """
-    klines: list = fetch_klines(session, "spot", SYMBOL, HOUR_INTERVAL, 14)
+    klines: list = fetch_klines(session, "spot", SYMBOL, HOUR_INTERVAL, RSI_PERIOD)
     if klines is None:
         print("Failed to fetch klines data.")
         return
 
-    rsi_value: float = calculate_rsi(klines)
+    rsi_value: float = calculate_rsi(klines, RSI_PERIOD)
     print(rsi_value)
     if rsi_value is None:
         print("Failed to calculate RSI.")
