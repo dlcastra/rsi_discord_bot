@@ -13,7 +13,7 @@ from find_rsi import calculate_rsi, fetch_klines
 """ ------ ENV ------ """
 load_dotenv()
 DISCORD_TOKEN: str = os.getenv("DISCORD_TOKEN")
-CHANNEL_ID: int = int(os.getenv("CHANNEL_ID"))
+CHANNEL_ID: str = os.getenv("CHANNEL_ID")
 
 """ ------ MAIN LOGIC FUNCTIONS ------ """
 intents = discord.Intents.default()
@@ -22,7 +22,7 @@ client = commands.Bot(command_prefix="!", intents=intents)
 
 async def background():
     await client.wait_until_ready()
-    channel = client.get_channel(CHANNEL_ID)
+    channel = client.get_channel(int(CHANNEL_ID))
     await channel.send("Test")
 
 
@@ -44,10 +44,10 @@ async def check_rsi() -> str or None:
         return
 
     try:
-        channel = client.get_channel(CHANNEL_ID)
-        if rsi_value > OVERBOUGHT_THRESHOLD:
+        channel = client.get_channel(int(CHANNEL_ID))
+        if rsi_value >= OVERBOUGHT_THRESHOLD:
             await channel.send(f"RSI is over {OVERBOUGHT_THRESHOLD}: {rsi_value}")
-        elif rsi_value < OVERSOLD_THRESHOLD:
+        elif rsi_value <= OVERSOLD_THRESHOLD:
             await channel.send(f"RSI is below {OVERSOLD_THRESHOLD}: {rsi_value}")
     except Exception as e:
         print("Error to get channel:", e)
