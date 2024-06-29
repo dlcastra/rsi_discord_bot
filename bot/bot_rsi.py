@@ -5,25 +5,25 @@ import os
 import discord
 from discord.ext import tasks, commands
 from dotenv import load_dotenv
+from pybit.unified_trading import HTTP
 
 # Custom files
-from constants import SYMBOL, HOUR_INTERVAL, OVERBOUGHT_THRESHOLD, OVERSOLD_THRESHOLD, RSI_PERIOD
+from constants.bybit_constants import SYMBOL, HOUR_INTERVAL, OVERBOUGHT_THRESHOLD, OVERSOLD_THRESHOLD, RSI_PERIOD
 from find_rsi import calculate_rsi, fetch_klines
 
 """ ------ ENV ------ """
 load_dotenv()
 DISCORD_TOKEN: str = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID: str = os.getenv("CHANNEL_ID")
+BYBIT_API_KEY = os.getenv("BYBIT_API_KEY")
+BYBIT_API_SECRET = os.getenv("BYBIT_API_SECRET")
 
-""" ------ MAIN LOGIC FUNCTIONS ------ """
+""" ------ SETTINGS ------ """
 intents = discord.Intents.default()
 client = commands.Bot(command_prefix="!", intents=intents)
+session = HTTP(testnet=False, api_key=BYBIT_API_KEY, api_secret=BYBIT_API_SECRET)
 
-
-async def background():
-    await client.wait_until_ready()
-    channel = client.get_channel(int(CHANNEL_ID))
-    await channel.send("Test")
+""" ------ BOT LOGIC FUNCTIONS ------ """
 
 
 async def check_rsi() -> str or None:
@@ -32,9 +32,10 @@ async def check_rsi() -> str or None:
     :return str if found klines
     :return None if no klines found
     """
-    klines: list = fetch_klines("spot", SYMBOL, HOUR_INTERVAL, RSI_PERIOD)
+    klines: list = fetch_klines(session, "spot", SYMBOL, HOUR_INTERVAL, RSI_PERIOD)
+    print(klines)
     if klines is None:
-        print("Failed to fetch k-lines data.")
+        print("Failed to fetch klines data.")
         return
 
     rsi_value: float = calculate_rsi(klines)
@@ -62,7 +63,6 @@ async def scheduled_check_rsi():
 @client.event
 async def on_ready():
     print(f"Logged in as {client.user}")
-    await check_rsi()
     scheduled_check_rsi.start()
 
 
